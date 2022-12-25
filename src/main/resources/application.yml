@@ -1,0 +1,21 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+
+elasticsearch:
+  hostname: localhost
+  port: 9200
+  password: admin
+  username: admin
+  index: message_note
+  scheme: http
+
+management:
+  health:
+    elasticsearch:
+      enabled: false
+
+bot:
+  username:
+  token:
