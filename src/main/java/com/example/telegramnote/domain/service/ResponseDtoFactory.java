@@ -8,11 +8,11 @@ import java.util.List;
 
 public class ResponseDtoFactory {
 
-    public ResponseDto<List<String>> createResponseDto(String message) {
+    protected ResponseDto<List<String>> createResponseDto(String message) {
         return ResponseDto.<List<String>>builder().payload(Collections.singletonList(message)).build();
     }
 
-    public ResponseDto<List<String>> createResponseDto(List<String> messages) {
+    protected ResponseDto<List<String>> createResponseDto(List<String> messages) {
         return ResponseDto.<List<String>>builder().payload(messages).build();
     }
 }

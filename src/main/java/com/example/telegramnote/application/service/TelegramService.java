@@ -31,7 +31,7 @@ public class TelegramService extends TelegramLongPollingBot {
         return token;
     }
 
-    public TelegramService(KeyboardService keyboardService, MessageService messageService) {
+    protected TelegramService(KeyboardService keyboardService, MessageService messageService) {
         this.keyboardService = keyboardService;
         this.messageService = messageService;
     }
@@ -48,7 +48,7 @@ public class TelegramService extends TelegramLongPollingBot {
     }
 
     @SneakyThrows
-    public synchronized void answerCallbackQuery(Update update) {
+    protected synchronized void answerCallbackQuery(Update update) {
         var callbackId = update.getCallbackQuery().getId();
         String message = null;
         AnswerCallbackQuery answer = new AnswerCallbackQuery();
@@ -59,7 +59,7 @@ public class TelegramService extends TelegramLongPollingBot {
     }
 
     @SneakyThrows(TelegramApiException.class)
-    public synchronized void sendMsg(Update update) {
+    protected synchronized void sendMsg(Update update) {
         var chatId = update.getMessage().getChatId();
         var response = messageService.createResponseMessage(update.getMessage());
         SendMessage sendMessage = new SendMessage();
