@@ -1,6 +1,5 @@
-package com.example.telegramnote.infra.OpenSearchService;
+package com.example.telegramnote.infra.openSearchService;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface OpenSearchOperationService {

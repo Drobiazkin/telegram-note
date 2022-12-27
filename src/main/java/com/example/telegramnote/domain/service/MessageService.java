@@ -2,7 +2,7 @@ package com.example.telegramnote.domain.service;
 
 import com.example.telegramnote.domain.dto.ResponseDto;
 import com.example.telegramnote.domain.entity.MessageEntity;
-import com.example.telegramnote.infra.OpenSearchService.OpenSearchOperationService;
+import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
 import lombok.SneakyThrows;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -34,17 +34,13 @@ public class MessageService {
         } else {
             if (message.getReplyToMessage() != null) {
                 var messageContext = message.getReplyToMessage().getText();
-                if("Отправьте данные которые необходимо создать".equals(messageContext)) {
+                if ("Отправьте данные которые необходимо создать".equals(messageContext)) {
                     var messageEntity = new MessageEntity(UUID.randomUUID().toString(), messageText, chatId);
-                    try {
-                        openSearchOperationService.indexRequest(messageEntity);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    openSearchOperationService.indexRequest(messageEntity);
                     return responseDtoFactory.createResponseDto(String.format(createdDocument, messageEntity.getMessageId()));
                 } else if ("Отправьте текст который необходимо найти".equals(messageContext)) {
                     var messages = new ArrayList<>(openSearchOperationService.getDocs(messageText, MessageEntity.class).stream().map(MessageEntity::getMessage).toList());
-                    if(messages.isEmpty()) {
+                    if (messages.isEmpty()) {
                         messages.add("Ничего не найдено");
                     }
                     return responseDtoFactory.createResponseDto(messages);

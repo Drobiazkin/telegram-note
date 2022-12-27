@@ -1,4 +1,4 @@
-package com.example.telegramnote.infra.OpenSearchService;
+package com.example.telegramnote.infra.openSearchService;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;

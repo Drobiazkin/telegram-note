@@ -2,7 +2,7 @@ package com.example.telegramnote.domain.configuration;
 
 import com.example.telegramnote.domain.service.MessageService;
 import com.example.telegramnote.domain.service.ResponseDtoFactory;
-import com.example.telegramnote.infra.OpenSearchService.OpenSearchOperationService;
+import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,9 +1,9 @@
 package com.example.telegramnote.infra.configuration;
 
-import com.example.telegramnote.infra.OpenSearchService.OpenSearchOperationService;
-import com.example.telegramnote.infra.OpenSearchService.OpenSearchOperationServiceImpl;
-import com.example.telegramnote.infra.OpenSearchService.OpenSearchRestClientServiceImpl;
-import com.example.telegramnote.infra.OpenSearchService.OpenSearchService;
+import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
+import com.example.telegramnote.infra.openSearchService.OpenSearchOperationServiceImpl;
+import com.example.telegramnote.infra.openSearchService.OpenSearchRestClientServiceImpl;
+import com.example.telegramnote.infra.openSearchService.OpenSearchService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
