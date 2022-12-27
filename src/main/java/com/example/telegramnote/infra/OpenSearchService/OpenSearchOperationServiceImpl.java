@@ -2,9 +2,13 @@ package com.example.telegramnote.infra.OpenSearchService;
 
 import lombok.SneakyThrows;
 import org.json.JSONObject;
+import org.opensearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.opensearch.action.delete.DeleteRequest;
+import org.opensearch.action.delete.DeleteResponse;
 import org.opensearch.action.get.GetRequest;
 import org.opensearch.action.get.GetResponse;
 import org.opensearch.action.index.IndexRequest;
+import org.opensearch.action.support.master.AcknowledgedResponse;
 import org.opensearch.client.RequestOptions;
 import org.opensearch.client.indices.CreateIndexRequest;
 import org.opensearch.client.opensearch._types.FieldValue;
@@ -69,15 +73,15 @@ public class OpenSearchOperationServiceImpl implements OpenSearchOperationServic
         return new ArrayList<>(response);
     }
 
+    @SneakyThrows
+    public void deleteRequest(String id) {
+        DeleteRequest deleteDocumentRequest = new DeleteRequest(index, id);
+        openSearchService.createRestHighLevelClient().delete(deleteDocumentRequest, RequestOptions.DEFAULT);
+    }
 
-//    public void deleteRequest() {
-//        DeleteRequest deleteDocumentRequest = new DeleteRequest(index, "1");
-//        DeleteResponse deleteResponse = client.delete(deleteDocumentRequest, RequestOptions.DEFAULT);
-//    }
-//
-//    public void deleteIndexRequest() {
-//        DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(index);
-//        AcknowledgedResponse deleteIndexResponse = client.indices().delete(deleteIndexRequest, RequestOptions.DEFAULT);
-//
-//    }
+    @SneakyThrows
+    public void deleteIndexRequest() {
+        DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(index);
+        openSearchService.createRestHighLevelClient().indices().delete(deleteIndexRequest, RequestOptions.DEFAULT);
+    }
 }

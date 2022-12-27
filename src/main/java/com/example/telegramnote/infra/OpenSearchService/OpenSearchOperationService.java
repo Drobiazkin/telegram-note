@@ -5,11 +5,15 @@ import java.util.List;
 
 public interface OpenSearchOperationService {
 
-    void createIndex() throws IOException;
+    void createIndex();
 
-    <T> void indexRequest(T indexData) throws IOException;
+    <T> void indexRequest(T indexData);
 
-    String indexGetRequest(String id) throws IOException;
+    String indexGetRequest(String id);
 
-    <T> List<T> getDocs(String tags, Class<T> entity) throws IOException;
+    <T> List<T> getDocs(String tags, Class<T> entity);
+
+    void deleteRequest(String id);
+
+    void deleteIndexRequest();
 }
