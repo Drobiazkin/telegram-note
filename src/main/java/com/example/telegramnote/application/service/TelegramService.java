@@ -31,20 +31,21 @@ public class TelegramService extends TelegramLongPollingBot {
         return token;
     }
 
-    protected TelegramService(KeyboardService keyboardService, MessageService messageService) {
+    public TelegramService(KeyboardService keyboardService, MessageService messageService) {
         this.keyboardService = keyboardService;
         this.messageService = messageService;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        new Thread(() -> {
+        Runnable threadUpdate = () -> {
             if (update.hasMessage()) {
                 sendMsg(update);
             } else if (update.hasCallbackQuery()) {
                 answerCallbackQuery(update);
             }
-        }).start();
+        };
+        new Thread(threadUpdate).start();
     }
 
     @SneakyThrows
