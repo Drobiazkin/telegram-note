@@ -1,6 +1,8 @@
 package com.example.telegramnote.application.service;
 
-import com.example.telegramnote.domain.service.MessageService;
+import com.example.telegramnote.domain.service.KeyboardService;
+import com.example.telegramnote.domain.service.CommonMessageService;
+import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +16,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Slf4j
 public class TelegramService extends TelegramLongPollingBot {
     KeyboardService keyboardService;
-    MessageService messageService;
+    CommonMessageService commonMessageService;
+    OpenSearchOperationService openSearchOperationService;
     @Value("${bot.username}")
     private String username;
 
@@ -31,9 +34,10 @@ public class TelegramService extends TelegramLongPollingBot {
         return token;
     }
 
-    public TelegramService(KeyboardService keyboardService, MessageService messageService) {
+    public TelegramService(KeyboardService keyboardService, CommonMessageService commonMessageService, OpenSearchOperationService openSearchOperationService) {
         this.keyboardService = keyboardService;
-        this.messageService = messageService;
+        this.commonMessageService = commonMessageService;
+        this.openSearchOperationService = openSearchOperationService;
     }
 
     @Override
@@ -50,35 +54,45 @@ public class TelegramService extends TelegramLongPollingBot {
 
     @SneakyThrows
     protected synchronized void answerCallbackQuery(Update update) {
-        var callbackId = update.getCallbackQuery().getId();
-        String message = null;
-        AnswerCallbackQuery answer = new AnswerCallbackQuery();
-        answer.setCallbackQueryId(callbackId);
-        answer.setText(message);
-        answer.setShowAlert(true);
-        execute(answer);
+        if (update.getCallbackQuery().getData().equals("1")) {
+            openSearchOperationService.createIndex();
+            var callbackId = update.getCallbackQuery().getId();
+            String message = "Индекс создан";
+            AnswerCallbackQuery answer = new AnswerCallbackQuery();
+            answer.setCallbackQueryId(callbackId);
+            answer.setText(message);
+            answer.setShowAlert(true);
+            execute(answer);
+        }
     }
 
     @SneakyThrows(TelegramApiException.class)
     protected synchronized void sendMsg(Update update) {
         var chatId = update.getMessage().getChatId();
-        var response = messageService.createResponseMessage(update.getMessage());
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId);
-//        if (message.equals("") || message.equals("")) {
-//            sendMessage.setReplyMarkup(keyboardService.setInline());
-//            sendMessage.setText("");
-//        } else {
-        if (response != null && response.getPayload() != null) {
-            for (var text : response.getPayload()) {
-                sendMessage.setText(text);
-                execute(sendMessage);
-            }
-        } else {
+        if ("/start".equals(update.getMessage().getText())) {
             sendMessage.setText("Воспользуйтесь командами на клавиатуре");
             keyboardService.setButtons(sendMessage);
             execute(sendMessage);
+        } else {
+            var response = commonMessageService.createResponseMessage(update.getMessage());
+//        if (response != null && response.getPayload() != null && response.getPayload().get(0).equals("Вы уверены что хотите создать индекс?")) {
+//            sendMessage.setReplyMarkup(keyboardService.setInline());
+//            sendMessage.setText("Вы уверены что хотите создать индекс?");
+//            execute(sendMessage);
+//        }
+            if (response.getInfo() != null) {
+                sendMessage.setText(response.getInfo());
+                execute(sendMessage);
+            }
+            if (response.getPayload() != null) {
+                for (var entity : response.getPayload()) {
+                    sendMessage.setText(entity.getMessage());
+                    execute(sendMessage);
+                }
+            }
         }
     }
 }

@@ -15,5 +15,6 @@ import lombok.experimental.FieldNameConstants;
 public class ResponseDto<T> {
 
     private T payload;
+    private String info;
 
 }

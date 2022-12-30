@@ -1,7 +1,6 @@
 package com.example.telegramnote.domain.configuration;
 
-import com.example.telegramnote.domain.service.MessageService;
-import com.example.telegramnote.domain.service.ResponseDtoFactory;
+import com.example.telegramnote.domain.service.*;
 import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +9,22 @@ import org.springframework.context.annotation.Configuration;
 public class MessageServiceConfiguration {
 
     @Bean
-    MessageService messageService(OpenSearchOperationService openSearchOperationService, ResponseDtoFactory responseDtoFactory) {
-        return new MessageService(openSearchOperationService, responseDtoFactory);
+    CommonMessageService commonMessageService(OpenSearchOperationService openSearchOperationService, ResponseFactory responseFactory, SearchService searchService, CreateDocumentService createDocumentService) {
+        return new CommonMessageService(openSearchOperationService, responseFactory, searchService, createDocumentService);
     }
 
     @Bean
-    ResponseDtoFactory responseDtoFactory() {
-        return new ResponseDtoFactory();
+    ResponseFactory responseFactory() {
+        return new ResponseFactoryImpl();
+    }
+
+    @Bean
+    SearchService messageService(OpenSearchOperationService openSearchOperationService, ResponseFactory responseFactory) {
+        return new SearchService(openSearchOperationService, responseFactory);
+    }
+
+    @Bean
+    CreateDocumentService createDocumentService(OpenSearchOperationService openSearchOperationService, ResponseFactory responseFactory) {
+        return new CreateDocumentService(openSearchOperationService, responseFactory);
     }
 }

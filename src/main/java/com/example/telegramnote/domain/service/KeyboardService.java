@@ -1,4 +1,4 @@
-package com.example.telegramnote.application.service;
+package com.example.telegramnote.domain.service;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KeyboardService {
-    protected synchronized void setButtons(SendMessage sendMessage) {
+    public synchronized void setButtons(SendMessage sendMessage) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         sendMessage.setReplyMarkup(replyKeyboardMarkup);
         replyKeyboardMarkup.setSelective(true);
@@ -25,22 +25,22 @@ public class KeyboardService {
 
         KeyboardRow keyboardSecondRow = new KeyboardRow();
         keyboardSecondRow.add(new KeyboardButton("Получить запись из БД"));
+        KeyboardRow keyboardThirdRow = new KeyboardRow();
+        keyboardThirdRow.add(new KeyboardButton("Создать индекс"));
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardSecondRow);
+        keyboard.add(keyboardThirdRow);
+
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
-    protected InlineKeyboardMarkup setInline() {
+    public InlineKeyboardMarkup setInline() {
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         List<InlineKeyboardButton> buttons1 = new ArrayList<>();
         InlineKeyboardButton text = new InlineKeyboardButton();
-        InlineKeyboardButton text2 = new InlineKeyboardButton();
-        text.setText("ДА");
-        text.setCallbackData("17");
-        text2.setText("ДА");
-        text2.setCallbackData("18");
+        text.setText("Вы уверены?");
+        text.setCallbackData("1");
         buttons1.add(text);
-        buttons1.add(text2);
         buttons.add(buttons1);
 
         InlineKeyboardMarkup markupKeyboard = new InlineKeyboardMarkup();
