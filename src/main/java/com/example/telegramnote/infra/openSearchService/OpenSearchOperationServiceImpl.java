@@ -31,6 +31,11 @@ public class OpenSearchOperationServiceImpl implements OpenSearchOperationServic
         this.openSearchService = openSearchService;
     }
 
+    private HashMap<String, Object> objectToJson(Object data) {
+        JSONObject dataAsJson = new JSONObject(data);
+        return new HashMap<>(dataAsJson.toMap());
+    }
+
     @SneakyThrows
     @Override
     public void createIndex() {
@@ -42,9 +47,7 @@ public class OpenSearchOperationServiceImpl implements OpenSearchOperationServic
     @Override
     public <T> void indexRequest(T indexData) {
         IndexRequest request = new IndexRequest(index);
-        JSONObject dataAsJson = new JSONObject(indexData);
-        HashMap<String, Object> dataAsMap = new HashMap<>(dataAsJson.toMap());
-        request.source(dataAsMap, XContentType.JSON);
+        request.source(objectToJson(indexData), XContentType.JSON);
         openSearchService.createRestHighLevelClient().index(request, RequestOptions.DEFAULT);
     }
 
@@ -53,7 +56,6 @@ public class OpenSearchOperationServiceImpl implements OpenSearchOperationServic
     public String indexGetRequest(String id) {
         GetRequest getRequest = new GetRequest(index, id);
         GetResponse response = openSearchService.createRestHighLevelClient().get(getRequest, RequestOptions.DEFAULT);
-        openSearchService.createRestHighLevelClient().close();
         return response.getSourceAsString();
     }
 

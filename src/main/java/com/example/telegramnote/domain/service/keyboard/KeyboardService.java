@@ -1,4 +1,4 @@
-package com.example.telegramnote.domain.service;
+package com.example.telegramnote.domain.service.keyboard;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;

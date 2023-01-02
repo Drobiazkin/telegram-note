@@ -28,9 +28,6 @@ public class OpenSearchRestClientServiceImpl implements OpenSearchService {
     private String scheme;
 
 
-//        System.setProperty("javax.net.ssl.trustStore", "/full/path/to/keystore");
-//        System.setProperty("javax.net.ssl.trustStorePassword", "password-to-keystore");
-
     @Override
     public RestHighLevelClient createRestHighLevelClient() {
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();

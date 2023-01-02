@@ -1,6 +1,9 @@
 package com.example.telegramnote.domain.configuration;
 
 import com.example.telegramnote.domain.service.*;
+import com.example.telegramnote.domain.service.command.CommandHandler;
+import com.example.telegramnote.domain.service.command.DocumentCreation;
+import com.example.telegramnote.domain.service.command.DocumentSearch;
 import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,22 +12,22 @@ import org.springframework.context.annotation.Configuration;
 public class MessageServiceConfiguration {
 
     @Bean
-    CommonMessageService commonMessageService(OpenSearchOperationService openSearchOperationService, ResponseFactory responseFactory, SearchService searchService, CreateDocumentService createDocumentService) {
-        return new CommonMessageService(openSearchOperationService, responseFactory, searchService, createDocumentService);
+    CommandHandler commonMessageService(OpenSearchOperationService openSearchOperationService, ResponseDtoCreatorService responseDtoCreatorService, DocumentSearch documentSearch, DocumentCreation documentCreation) {
+        return new CommandHandler(openSearchOperationService, responseDtoCreatorService, documentSearch, documentCreation);
     }
 
     @Bean
-    ResponseFactory responseFactory() {
-        return new ResponseFactoryImpl();
+    ResponseDtoCreatorService responseFactory() {
+        return new ResponseDtoCreatorServiceImpl();
     }
 
     @Bean
-    SearchService messageService(OpenSearchOperationService openSearchOperationService, ResponseFactory responseFactory) {
-        return new SearchService(openSearchOperationService, responseFactory);
+    DocumentSearch messageService(OpenSearchOperationService openSearchOperationService, ResponseDtoCreatorService responseDtoCreatorService) {
+        return new DocumentSearch(openSearchOperationService, responseDtoCreatorService);
     }
 
     @Bean
-    CreateDocumentService createDocumentService(OpenSearchOperationService openSearchOperationService, ResponseFactory responseFactory) {
-        return new CreateDocumentService(openSearchOperationService, responseFactory);
+    DocumentCreation createDocumentService(OpenSearchOperationService openSearchOperationService, ResponseDtoCreatorService responseDtoCreatorService) {
+        return new DocumentCreation(openSearchOperationService, responseDtoCreatorService);
     }
 }

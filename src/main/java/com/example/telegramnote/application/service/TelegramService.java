@@ -1,7 +1,7 @@
 package com.example.telegramnote.application.service;
 
-import com.example.telegramnote.domain.service.KeyboardService;
-import com.example.telegramnote.domain.service.CommonMessageService;
+import com.example.telegramnote.domain.service.keyboard.KeyboardService;
+import com.example.telegramnote.domain.service.command.CommandHandler;
 import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Slf4j
 public class TelegramService extends TelegramLongPollingBot {
     KeyboardService keyboardService;
-    CommonMessageService commonMessageService;
+    CommandHandler commonMessageService;
     OpenSearchOperationService openSearchOperationService;
     @Value("${bot.username}")
     private String username;
@@ -34,7 +34,7 @@ public class TelegramService extends TelegramLongPollingBot {
         return token;
     }
 
-    public TelegramService(KeyboardService keyboardService, CommonMessageService commonMessageService, OpenSearchOperationService openSearchOperationService) {
+    public TelegramService(KeyboardService keyboardService, CommandHandler commonMessageService, OpenSearchOperationService openSearchOperationService) {
         this.keyboardService = keyboardService;
         this.commonMessageService = commonMessageService;
         this.openSearchOperationService = openSearchOperationService;
@@ -77,7 +77,7 @@ public class TelegramService extends TelegramLongPollingBot {
             keyboardService.setButtons(sendMessage);
             execute(sendMessage);
         } else {
-            var response = commonMessageService.createResponseMessage(update.getMessage());
+            var response = commonMessageService.handleEvent(update.getMessage());
 //        if (response != null && response.getPayload() != null && response.getPayload().get(0).equals("Вы уверены что хотите создать индекс?")) {
 //            sendMessage.setReplyMarkup(keyboardService.setInline());
 //            sendMessage.setText("Вы уверены что хотите создать индекс?");
