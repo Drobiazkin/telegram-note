@@ -2,14 +2,12 @@ package com.example.telegramnote.infra.openSearchService.factory;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.opensearch.client.RestHighLevelClient;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum RestClientEnum {
 
-    HIGH_LEVEL(new HighLevelRestClientFactory()),
-    LOW_LEVEL(new LowLevelRestClientFactory());
-    private final RestClientFactory restClientFactory;
+    HIGH_LEVEL(new OpenSearchHighLevelRestClientFactory()),
+    LOW_LEVEL(new OpenSearchLowLevelRestClientFactory());
 
 }

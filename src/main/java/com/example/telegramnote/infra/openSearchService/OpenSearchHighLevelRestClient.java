@@ -5,7 +5,7 @@ import org.opensearch.client.RestClient;
 import org.opensearch.client.RestClientBuilder;
 import org.opensearch.client.RestHighLevelClient;
 
-public class HighLevelRestClient extends AbstractRestClient<RestHighLevelClient> {
+public class OpenSearchHighLevelRestClient extends OpenSearchRestClientAbstract<RestHighLevelClient> {
 
     private RestHighLevelClient createRestHighLevelClient() {
         RestClientBuilder builder = RestClient.builder(new HttpHost(elasticHosts, port, scheme))

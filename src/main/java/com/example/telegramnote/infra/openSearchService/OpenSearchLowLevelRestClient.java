@@ -7,7 +7,7 @@ import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.rest_client.RestClientTransport;
 
-public class LowLevelRestClient extends AbstractRestClient<OpenSearchClient> {
+public class OpenSearchLowLevelRestClient extends OpenSearchRestClientAbstract<OpenSearchClient> {
     public OpenSearchClient createRestLowLevelClient() {
         var builder = RestClient.builder(new HttpHost(elasticHosts, port, scheme))
                 .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));

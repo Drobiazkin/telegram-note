@@ -6,7 +6,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.springframework.beans.factory.annotation.Value;
 
-public abstract class AbstractRestClient<T> {
+public abstract class OpenSearchRestClientAbstract<T> {
 
     protected static final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
     @Value("${elasticsearch.hostname}")
