@@ -3,7 +3,7 @@ package com.example.telegramnote.domain.service.command;
 import com.example.telegramnote.domain.dto.ResponseDto;
 import com.example.telegramnote.domain.entity.MessageEntity;
 import com.example.telegramnote.domain.service.ResponseDtoCreatorService;
-import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
+import com.example.telegramnote.infra.adapter.openSearch.OpenSearchAdapter;
 import lombok.SneakyThrows;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class DocumentCreation extends AbstractCommand implements CommandService {
-    OpenSearchOperationService openSearchOperationService;
+    OpenSearchAdapter openSearchAdapter;
     ResponseDtoCreatorService responseDtoCreatorService;
 
-    public DocumentCreation(OpenSearchOperationService openSearchOperationService, ResponseDtoCreatorService responseDtoCreatorService) {
-        this.openSearchOperationService = openSearchOperationService;
+    public DocumentCreation(OpenSearchAdapter openSearchAdapter, ResponseDtoCreatorService responseDtoCreatorService) {
+        this.openSearchAdapter = openSearchAdapter;
         this.responseDtoCreatorService = responseDtoCreatorService;
     }
 
@@ -26,7 +26,7 @@ public class DocumentCreation extends AbstractCommand implements CommandService 
         var messageText = message.getText().trim();
         if (message.getReplyToMessage() != null) {
             var messageEntity = new MessageEntity(UUID.randomUUID().toString(), messageText, chatId);
-            openSearchOperationService.indexRequest(messageEntity);
+            openSearchAdapter.indexRequest(messageEntity);
             return responseDtoCreatorService.createResponseDto(String.format(createdDocument,messageEntity.getMessageId().trim()));
         }
         return responseDtoCreatorService.createResponseDto(requestNotRecognized);

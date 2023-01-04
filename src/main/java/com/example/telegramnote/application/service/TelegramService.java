@@ -2,7 +2,7 @@ package com.example.telegramnote.application.service;
 
 import com.example.telegramnote.domain.service.keyboard.KeyboardService;
 import com.example.telegramnote.domain.service.command.CommandHandler;
-import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
+import com.example.telegramnote.infra.adapter.openSearch.OpenSearchAdapter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramService extends TelegramLongPollingBot {
     KeyboardService keyboardService;
     CommandHandler commonMessageService;
-    OpenSearchOperationService openSearchOperationService;
+    OpenSearchAdapter openSearchAdapter;
     @Value("${bot.username}")
     private String username;
 
@@ -34,10 +34,10 @@ public class TelegramService extends TelegramLongPollingBot {
         return token;
     }
 
-    public TelegramService(KeyboardService keyboardService, CommandHandler commonMessageService, OpenSearchOperationService openSearchOperationService) {
+    public TelegramService(KeyboardService keyboardService, CommandHandler commonMessageService, OpenSearchAdapter openSearchAdapter) {
         this.keyboardService = keyboardService;
         this.commonMessageService = commonMessageService;
-        this.openSearchOperationService = openSearchOperationService;
+        this.openSearchAdapter = openSearchAdapter;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class TelegramService extends TelegramLongPollingBot {
     @SneakyThrows
     protected synchronized void answerCallbackQuery(Update update) {
         if (update.getCallbackQuery().getData().equals("1")) {
-            openSearchOperationService.createIndex();
+            openSearchAdapter.createIndex();
             var callbackId = update.getCallbackQuery().getId();
             String message = "Индекс создан";
             AnswerCallbackQuery answer = new AnswerCallbackQuery();

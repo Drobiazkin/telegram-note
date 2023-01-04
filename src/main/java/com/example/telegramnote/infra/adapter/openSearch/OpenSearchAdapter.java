@@ -1,8 +1,8 @@
-package com.example.telegramnote.infra.openSearchService;
+package com.example.telegramnote.infra.adapter.openSearch;
 
 import java.util.List;
 
-public interface OpenSearchOperationService {
+public interface OpenSearchAdapter {
 
     void createIndex();
 

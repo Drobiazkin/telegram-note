@@ -10,30 +10,37 @@ public class OpenSearchRestClientService {
 
     private static final String HIGH_LEVEL = "HIGH_LEVEL";
     private static final String LOW_LEVEL = "LOW_LEVEL";
+    private static OpenSearchClient openSearchClient;
+    private static RestHighLevelClient restHighLevelClient;
 
-    public static <T> OpenSearchRestClientAbstract<T> createRestClient(String restClientType) {
+    public OpenSearchClient getOpenSearchClient() {
+        return openSearchClient;
+    }
+
+    public RestHighLevelClient getRestHighLevelClient() {
+        return restHighLevelClient;
+    }
+
+    public OpenSearchRestClientService(String restClientType) {
+        createRestClient(restClientType);
+    }
+
+    public static void createRestClient(String restClientType) {
         switch (restClientType) {
-            case HIGH_LEVEL -> {
-                return getHighLevelClient();
-            }
-            case LOW_LEVEL ->
-            {
-                return getLowLevelClient();
-            }
-            default -> {
-                return null;
-            }
+            case LOW_LEVEL -> openSearchClient = getLowLevelClient();
+            case HIGH_LEVEL -> restHighLevelClient = getHighLevelClient();
+            default -> throw new RuntimeException();
         }
     }
 
-    private static OpenSearchRestClientAbstract<OpenSearchClient> getLowLevelClient() {
+    private static OpenSearchClient getLowLevelClient() {
         OpenSearchRestClientFactory<OpenSearchClient> openSearchRestClientFactory = new OpenSearchLowLevelRestClientFactory();
-        return createClient(openSearchRestClientFactory);
+        return createClient(openSearchRestClientFactory).restClient();
     }
 
-    private static OpenSearchRestClientAbstract<RestHighLevelClient> getHighLevelClient() {
+    private static RestHighLevelClient getHighLevelClient() {
         OpenSearchRestClientFactory<RestHighLevelClient> openSearchRestClientFactory = new OpenSearchHighLevelRestClientFactory();
-        return createClient(openSearchRestClientFactory);
+        return createClient(openSearchRestClientFactory).restClient();
     }
 
     private static <T> OpenSearchRestClientAbstract<T> createClient(OpenSearchRestClientFactory<T> openSearchRestClientFactory) {

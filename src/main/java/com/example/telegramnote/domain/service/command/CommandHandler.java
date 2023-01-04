@@ -3,21 +3,21 @@ package com.example.telegramnote.domain.service.command;
 import com.example.telegramnote.domain.dto.ResponseDto;
 import com.example.telegramnote.domain.entity.MessageEntity;
 import com.example.telegramnote.domain.service.ResponseDtoCreatorService;
-import com.example.telegramnote.infra.openSearchService.OpenSearchOperationService;
+import com.example.telegramnote.infra.adapter.openSearch.OpenSearchAdapter;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
 public class CommandHandler extends AbstractCommand {
 
-    OpenSearchOperationService openSearchOperationService;
+    OpenSearchAdapter openSearchAdapter;
     ResponseDtoCreatorService responseDtoCreatorService;
     DocumentSearch documentSearch;
     DocumentCreation documentCreation;
 
 
-    public CommandHandler(OpenSearchOperationService openSearchOperationService, ResponseDtoCreatorService responseDtoCreatorService, DocumentSearch documentSearch, DocumentCreation documentCreation) {
-        this.openSearchOperationService = openSearchOperationService;
+    public CommandHandler(OpenSearchAdapter openSearchAdapter, ResponseDtoCreatorService responseDtoCreatorService, DocumentSearch documentSearch, DocumentCreation documentCreation) {
+        this.openSearchAdapter = openSearchAdapter;
         this.responseDtoCreatorService = responseDtoCreatorService;
         this.documentSearch = documentSearch;
         this.documentCreation = documentCreation;
