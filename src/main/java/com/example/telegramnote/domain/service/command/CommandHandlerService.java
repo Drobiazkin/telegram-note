@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
+public interface CommandHandlerService {
 
-public interface CommandService {
-    ResponseDto<List<DocumentEntity>> replyToCommand(Message message);
+    ResponseDto<List<DocumentEntity>> handleEvent(Message message);
 }

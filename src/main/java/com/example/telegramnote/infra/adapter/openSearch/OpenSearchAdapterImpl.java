@@ -1,6 +1,6 @@
 package com.example.telegramnote.infra.adapter.openSearch;
 
-import com.example.telegramnote.infra.openSearchService.OpenSearchRestClientService;
+import com.example.telegramnote.infra.openSearch.OpenSearchRestClientService;
 import lombok.SneakyThrows;
 import org.json.JSONObject;
 import org.opensearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -52,8 +52,8 @@ public class OpenSearchAdapterImpl implements OpenSearchAdapter {
 
     @SneakyThrows
     @Override
-    public <T> void indexRequest(T indexData) {
-        IndexRequest request = new IndexRequest(index);
+    public <T> void indexRequest(T indexData, String id) {
+        IndexRequest request = new IndexRequest(index).id("");
         request.source(objectToJson(indexData), XContentType.JSON);
         highRestClient().index(request, RequestOptions.DEFAULT);
     }
@@ -77,6 +77,18 @@ public class OpenSearchAdapterImpl implements OpenSearchAdapter {
         var searchResponse = lowRestClient().search(searchRequest, entity);
         var response = searchResponse.hits().hits().stream().map(Hit::source).filter(Objects::nonNull).toList();
         return new ArrayList<>(response);
+    }
+
+    @SneakyThrows
+    @Override
+    public <T> T getDocId(String id, Class<T> entity){
+        SearchRequest searchRequest = new SearchRequest
+                .Builder()
+                .query(q -> q.match(m -> m.field("documentId")
+                        .query(FieldValue.of(id)))).index(index)
+                .build();
+        var searchResponse = lowRestClient().search(searchRequest, entity);
+        return searchResponse.hits().hits().stream().map(Hit::source).filter(Objects::nonNull).findAny().orElse(null);
     }
 
     @SneakyThrows

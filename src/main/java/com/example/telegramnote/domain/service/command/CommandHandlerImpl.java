@@ -1,38 +1,36 @@
 package com.example.telegramnote.domain.service.command;
 
 import com.example.telegramnote.domain.dto.ResponseDto;
-import com.example.telegramnote.domain.entity.MessageEntity;
-import com.example.telegramnote.domain.service.ResponseDtoCreatorService;
-import com.example.telegramnote.infra.adapter.openSearch.OpenSearchAdapter;
+import com.example.telegramnote.domain.entity.DocumentEntity;
+import com.example.telegramnote.domain.dto.ResponseDtoCreatorService;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 
-public class CommandHandler extends AbstractCommand {
+public class CommandHandlerImpl extends AbstractCommand implements CommandHandlerService {
 
-    OpenSearchAdapter openSearchAdapter;
     ResponseDtoCreatorService responseDtoCreatorService;
-    DocumentSearch documentSearch;
-    DocumentCreation documentCreation;
+    CommandService commandSearchDocument;
+    CommandService commandCreationDocument;
 
 
-    public CommandHandler(OpenSearchAdapter openSearchAdapter, ResponseDtoCreatorService responseDtoCreatorService, DocumentSearch documentSearch, DocumentCreation documentCreation) {
-        this.openSearchAdapter = openSearchAdapter;
+    public CommandHandlerImpl(ResponseDtoCreatorService responseDtoCreatorService, CommandService commandSearchDocument, CommandService commandCreationDocument) {
         this.responseDtoCreatorService = responseDtoCreatorService;
-        this.documentSearch = documentSearch;
-        this.documentCreation = documentCreation;
+        this.commandSearchDocument = commandSearchDocument;
+        this.commandCreationDocument = commandCreationDocument;
     }
 
     private CommandService defineCommandByMessage(String text) {
         if (searchDataRequest.equals(text)) {
-            return documentSearch;
+            return commandSearchDocument;
         } else if (createDataRequest.equals(text)) {
-            return documentCreation;
+            return commandCreationDocument;
         }
         return null;
     }
 
-    public ResponseDto<List<MessageEntity>> handleEvent(Message message) {
+    @Override
+    public ResponseDto<List<DocumentEntity>> handleEvent(Message message) {
         if (message.getReplyToMessage() != null) {
             var commandService = defineCommandByMessage(message.getReplyToMessage().getText());
             assert commandService != null;
@@ -43,6 +41,7 @@ public class CommandHandler extends AbstractCommand {
                 case "Создать запись в БД" -> responseDtoCreatorService.createResponseDto(createDataRequest);
                 case "Получить запись из БД" -> responseDtoCreatorService.createResponseDto(searchDataRequest);
                 case "Создать индекс" -> responseDtoCreatorService.createResponseDto(createIndexRequest);
+                case "/start" -> responseDtoCreatorService.createResponseDto(requestBotStart);
                 default -> responseDtoCreatorService.createResponseDto(requestNotRecognized);
             };
         }

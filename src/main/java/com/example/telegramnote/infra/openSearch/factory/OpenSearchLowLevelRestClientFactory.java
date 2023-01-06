@@ -1,7 +1,7 @@
-package com.example.telegramnote.infra.openSearchService.factory;
+package com.example.telegramnote.infra.openSearch.factory;
 
-import com.example.telegramnote.infra.openSearchService.OpenSearchRestClientAbstract;
-import com.example.telegramnote.infra.openSearchService.OpenSearchLowLevelRestClient;
+import com.example.telegramnote.infra.openSearch.OpenSearchRestClientAbstract;
+import com.example.telegramnote.infra.openSearch.OpenSearchLowLevelRestClient;
 import org.opensearch.client.opensearch.OpenSearchClient;
 
 public class OpenSearchLowLevelRestClientFactory implements OpenSearchRestClientFactory<OpenSearchClient> {

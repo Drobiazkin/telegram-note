@@ -1,6 +1,4 @@
-package com.example.telegramnote.domain.service;
-
-import com.example.telegramnote.domain.dto.ResponseDto;
+package com.example.telegramnote.domain.dto;
 
 import java.util.Collections;
 import java.util.List;

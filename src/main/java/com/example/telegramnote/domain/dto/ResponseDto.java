@@ -1,20 +1,18 @@
 package com.example.telegramnote.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
-
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @FieldNameConstants
 public class ResponseDto<T> {
 
     private T payload;
     private String info;
 
+    protected ResponseDto(T payload, String info) {
+        this.payload = payload;
+        this.info = info;
+    }
 }

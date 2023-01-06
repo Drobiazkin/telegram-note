@@ -1,4 +1,4 @@
-package com.example.telegramnote.infra.openSearchService;
+package com.example.telegramnote.infra.openSearch;
 
 import org.apache.http.HttpHost;
 import org.opensearch.client.RestClient;

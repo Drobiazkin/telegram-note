@@ -1,8 +1,8 @@
-package com.example.telegramnote.infra.openSearchService;
+package com.example.telegramnote.infra.openSearch;
 
-import com.example.telegramnote.infra.openSearchService.factory.OpenSearchHighLevelRestClientFactory;
-import com.example.telegramnote.infra.openSearchService.factory.OpenSearchLowLevelRestClientFactory;
-import com.example.telegramnote.infra.openSearchService.factory.OpenSearchRestClientFactory;
+import com.example.telegramnote.infra.openSearch.factory.OpenSearchHighLevelRestClientFactory;
+import com.example.telegramnote.infra.openSearch.factory.OpenSearchLowLevelRestClientFactory;
+import com.example.telegramnote.infra.openSearch.factory.OpenSearchRestClientFactory;
 import org.opensearch.client.RestHighLevelClient;
 import org.opensearch.client.opensearch.OpenSearchClient;
 

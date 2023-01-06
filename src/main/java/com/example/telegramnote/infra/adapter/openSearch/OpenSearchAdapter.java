@@ -6,9 +6,11 @@ public interface OpenSearchAdapter {
 
     void createIndex();
 
-    <T> void indexRequest(T indexData);
+    <T> void indexRequest(T indexData, String id);
 
     String indexGetRequest(String id);
+
+    <T> T getDocId(String id, Class<T> entity);
 
     <T> List<T> getDocs(String tags, Class<T> entity);
 
