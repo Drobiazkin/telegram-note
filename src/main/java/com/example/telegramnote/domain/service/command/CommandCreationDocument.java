@@ -13,7 +13,6 @@ import java.util.List;
 public class CommandCreationDocument extends AbstractCommand implements CommandService {
     DocumentEntityFactory documentEntityFactory;
     ResponseDtoCreatorService responseDtoCreatorService;
-
     DocumentEntityRepository documentEntityRepository;
 
     public CommandCreationDocument(ResponseDtoCreatorService responseDtoCreatorService, DocumentEntityFactory documentEntityFactory, DocumentEntityRepository documentEntityRepository) {

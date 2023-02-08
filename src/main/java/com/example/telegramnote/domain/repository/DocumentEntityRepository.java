@@ -12,4 +12,6 @@ public interface DocumentEntityRepository {
 
     DocumentEntity getDocument(String documentId);
 
+    void createIndex();
+
 }

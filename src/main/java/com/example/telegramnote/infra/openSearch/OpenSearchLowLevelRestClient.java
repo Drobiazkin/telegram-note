@@ -8,7 +8,7 @@ import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.rest_client.RestClientTransport;
 
 public class OpenSearchLowLevelRestClient extends OpenSearchRestClientAbstract<OpenSearchClient> {
-    public OpenSearchClient createRestLowLevelClient() {
+    private OpenSearchClient createRestLowLevelClient() {
         var builder = RestClient.builder(new HttpHost(elasticHosts, port, scheme))
                 .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
         OpenSearchTransport transport = new RestClientTransport(builder.build(), new JacksonJsonpMapper());

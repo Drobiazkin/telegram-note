@@ -29,6 +29,8 @@ public class OpenSearchAdapterImpl implements OpenSearchAdapter {
 
     private static final String REST_CLIENT_HIGH_LEVEL = "HIGH_LEVEL";
     private static final String REST_CLIENT_LOW_LEVEL = "LOW_LEVEL";
+    private static OpenSearchClient openSearchClient;
+    private static RestHighLevelClient restHighLevelClient;
 
     private HashMap<String, Object> objectToJson(Object data) {
         JSONObject dataAsJson = new JSONObject(data);
@@ -36,11 +38,11 @@ public class OpenSearchAdapterImpl implements OpenSearchAdapter {
     }
 
     private OpenSearchClient lowRestClient() {
-        return new OpenSearchRestClientService(REST_CLIENT_LOW_LEVEL).getOpenSearchClient();
+        return openSearchClient == null ? openSearchClient = new OpenSearchRestClientService(REST_CLIENT_LOW_LEVEL).getOpenSearchClient() : openSearchClient;
     }
 
     private RestHighLevelClient highRestClient() {
-        return new OpenSearchRestClientService(REST_CLIENT_HIGH_LEVEL).getRestHighLevelClient();
+        return restHighLevelClient == null ? restHighLevelClient = new OpenSearchRestClientService(REST_CLIENT_HIGH_LEVEL).getRestHighLevelClient() : restHighLevelClient;
     }
 
     @SneakyThrows
@@ -81,7 +83,7 @@ public class OpenSearchAdapterImpl implements OpenSearchAdapter {
 
     @SneakyThrows
     @Override
-    public <T> T getDocId(String id, Class<T> entity){
+    public <T> T getDocId(String id, Class<T> entity) {
         SearchRequest searchRequest = new SearchRequest
                 .Builder()
                 .query(q -> q.match(m -> m.field("documentId")

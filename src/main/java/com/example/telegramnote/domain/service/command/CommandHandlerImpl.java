@@ -12,12 +12,14 @@ public class CommandHandlerImpl extends AbstractCommand implements CommandHandle
     ResponseDtoCreatorService responseDtoCreatorService;
     CommandService commandSearchDocument;
     CommandService commandCreationDocument;
+    CommandService commandCreationIndex;
 
 
-    public CommandHandlerImpl(ResponseDtoCreatorService responseDtoCreatorService, CommandService commandSearchDocument, CommandService commandCreationDocument) {
+    public CommandHandlerImpl(ResponseDtoCreatorService responseDtoCreatorService, CommandService commandSearchDocument, CommandService commandCreationDocument, CommandService commandCreationIndex) {
         this.responseDtoCreatorService = responseDtoCreatorService;
         this.commandSearchDocument = commandSearchDocument;
         this.commandCreationDocument = commandCreationDocument;
+        this.commandCreationIndex = commandCreationIndex;
     }
 
     private CommandService defineCommandByMessage(String text) {
@@ -25,6 +27,8 @@ public class CommandHandlerImpl extends AbstractCommand implements CommandHandle
             return commandSearchDocument;
         } else if (createDataRequest.equals(text)) {
             return commandCreationDocument;
+        } else if (createIndexRequest.equals(text)) {
+            return commandCreationIndex;
         }
         return null;
     }

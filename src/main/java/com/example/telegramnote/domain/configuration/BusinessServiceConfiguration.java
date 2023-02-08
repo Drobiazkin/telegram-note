@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
 public class BusinessServiceConfiguration {
 
     @Bean
-    CommandHandlerService commonMessageService(ResponseDtoCreatorService responseDtoCreatorService, CommandService commandSearchDocument, CommandService commandCreationDocument) {
-        return new CommandHandlerImpl(responseDtoCreatorService, commandSearchDocument, commandCreationDocument);
+    CommandHandlerService commonMessageService(ResponseDtoCreatorService responseDtoCreatorService, CommandService commandSearchDocument, CommandService commandCreationDocument, CommandService commandCreationIndex) {
+        return new CommandHandlerImpl(responseDtoCreatorService, commandSearchDocument, commandCreationDocument, commandCreationIndex);
     }
     @Bean
     ResponseDtoCreatorService responseFactory() {
@@ -40,6 +40,10 @@ public class BusinessServiceConfiguration {
     @Bean(name = "commandGetDocument")
     CommandService commandGetDocument(ResponseDtoCreatorService responseDtoCreatorService, DocumentEntityFactory documentEntityFactory, DocumentEntityRepository documentEntityRepository) {
         return new CommandGetDocument(responseDtoCreatorService, documentEntityFactory, documentEntityRepository);
+    }
+    @Bean(name = "commandCreationIndex")
+    CommandService commandCreationIndex(ResponseDtoCreatorService responseDtoCreatorService, DocumentEntityFactory documentEntityFactory, DocumentEntityRepository documentEntityRepository) {
+        return new CommandCreationIndex(responseDtoCreatorService, documentEntityFactory, documentEntityRepository);
     }
     @Bean
     DocumentEntityRepository messageEntityRepository(OpenSearchAdapter openSearchAdapter) {

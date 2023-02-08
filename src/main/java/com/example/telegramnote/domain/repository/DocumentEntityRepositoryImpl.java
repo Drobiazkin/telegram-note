@@ -26,4 +26,11 @@ public class DocumentEntityRepositoryImpl implements DocumentEntityRepository {
     public DocumentEntity getDocument(String documentId) {
         return openSearchAdapter.getDocId(documentId, DocumentEntity.class);
     }
+
+    @Override
+    public void createIndex() {
+        openSearchAdapter.createIndex();
+    }
+
+
 }
