@@ -1,6 +1,6 @@
-package com.example.telegramnote.infra.adapter.openSearch;
+package com.example.telegramnote.infra.adapter;
 
-import com.example.telegramnote.infra.openSearch.OpenSearchRestClientService;
+import com.example.telegramnote.infra.openSearch.OpenSearchRestClientAbstract;
 import lombok.SneakyThrows;
 import org.json.JSONObject;
 import org.opensearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -26,11 +26,13 @@ public class OpenSearchAdapterImpl implements OpenSearchAdapter {
 
     @Value("${elasticsearch.index}")
     String index;
+    OpenSearchRestClientAbstract<RestHighLevelClient> restHighLevelClientOpenSearchRestClientAbstract;
+    OpenSearchRestClientAbstract<OpenSearchClient> openSearchClientOpenSearchRestClientAbstract;
 
-    private static final String REST_CLIENT_HIGH_LEVEL = "HIGH_LEVEL";
-    private static final String REST_CLIENT_LOW_LEVEL = "LOW_LEVEL";
-    private static OpenSearchClient openSearchClient;
-    private static RestHighLevelClient restHighLevelClient;
+    public OpenSearchAdapterImpl(OpenSearchRestClientAbstract<RestHighLevelClient> restHighLevelClientOpenSearchRestClientAbstract, OpenSearchRestClientAbstract<OpenSearchClient> openSearchClientOpenSearchRestClientAbstract) {
+        this.restHighLevelClientOpenSearchRestClientAbstract = restHighLevelClientOpenSearchRestClientAbstract;
+        this.openSearchClientOpenSearchRestClientAbstract = openSearchClientOpenSearchRestClientAbstract;
+    }
 
     private HashMap<String, Object> objectToJson(Object data) {
         JSONObject dataAsJson = new JSONObject(data);
@@ -38,11 +40,11 @@ public class OpenSearchAdapterImpl implements OpenSearchAdapter {
     }
 
     private OpenSearchClient lowRestClient() {
-        return openSearchClient == null ? openSearchClient = new OpenSearchRestClientService(REST_CLIENT_LOW_LEVEL).getOpenSearchClient() : openSearchClient;
+        return openSearchClientOpenSearchRestClientAbstract.getRestClient();
     }
 
     private RestHighLevelClient highRestClient() {
-        return restHighLevelClient == null ? restHighLevelClient = new OpenSearchRestClientService(REST_CLIENT_HIGH_LEVEL).getRestHighLevelClient() : restHighLevelClient;
+        return restHighLevelClientOpenSearchRestClientAbstract.getRestClient();
     }
 
     @SneakyThrows

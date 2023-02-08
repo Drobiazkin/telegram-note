@@ -1,7 +1,7 @@
 package com.example.telegramnote.domain.repository;
 
 import com.example.telegramnote.domain.entity.DocumentEntity;
-import com.example.telegramnote.infra.adapter.openSearch.OpenSearchAdapter;
+import com.example.telegramnote.infra.adapter.OpenSearchAdapter;
 
 import java.util.List;
 

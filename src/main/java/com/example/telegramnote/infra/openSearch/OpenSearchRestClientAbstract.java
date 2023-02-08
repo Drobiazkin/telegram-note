@@ -15,7 +15,7 @@ public abstract class OpenSearchRestClientAbstract<T> {
 
     protected static final String scheme = "http";
 
-    public abstract T restClient();
+    public abstract T getRestClient();
 
     public OpenSearchRestClientAbstract() {
         createCredentials();

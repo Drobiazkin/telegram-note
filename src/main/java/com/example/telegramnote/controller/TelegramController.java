@@ -49,7 +49,7 @@ public class TelegramController extends TelegramLongPollingBot {
 
     //TODO Implement in the future
     @SneakyThrows
-    protected synchronized void answerCallbackQuery(Update update) {
+    protected void answerCallbackQuery(Update update) {
         if (update.getCallbackQuery().getData().equals("1")) {
             var callbackId = update.getCallbackQuery().getId();
             String message = "Индекс создан";
@@ -62,7 +62,7 @@ public class TelegramController extends TelegramLongPollingBot {
     }
 
     @SneakyThrows(TelegramApiException.class)
-    protected synchronized void sendMsg(Update update) {
+    protected void sendMsg(Update update) {
         var responseBody = messageService.createResponseMessage(update.getMessage());
         for(var body : responseBody) {
             executeAsync(body);

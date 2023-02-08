@@ -1,4 +1,4 @@
-package com.example.telegramnote.infra.adapter.openSearch;
+package com.example.telegramnote.infra.adapter;
 
 import java.util.List;
 

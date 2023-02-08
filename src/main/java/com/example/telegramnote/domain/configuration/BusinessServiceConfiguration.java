@@ -10,7 +10,7 @@ import com.example.telegramnote.domain.service.command.*;
 import com.example.telegramnote.domain.service.message.keyboard.KeyboardService;
 import com.example.telegramnote.domain.service.message.MessageImpl;
 import com.example.telegramnote.domain.service.message.MessageService;
-import com.example.telegramnote.infra.adapter.openSearch.OpenSearchAdapter;
+import com.example.telegramnote.infra.adapter.OpenSearchAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
