@@ -8,24 +8,21 @@ import org.opensearch.client.transport.OpenSearchTransport;
 import org.opensearch.client.transport.rest_client.RestClientTransport;
 
 public class OpenSearchLowLevelRestClient extends OpenSearchRestClientAbstract<OpenSearchClient> {
-    private static volatile OpenSearchClient openSearchClient;
+    private static OpenSearchClient openSearchClient;
 
-    private OpenSearchClient createRestLowLevelClient() {
+    public OpenSearchLowLevelRestClient() {
+        createRestLowLevelClient();
+    }
+
+    private void createRestLowLevelClient() {
         var builder = RestClient.builder(new HttpHost(elasticHosts, port, scheme))
                 .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
         OpenSearchTransport transport = new RestClientTransport(builder.build(), new JacksonJsonpMapper());
-        return new OpenSearchClient(transport);
+        openSearchClient = new OpenSearchClient(transport);
     }
 
     @Override
     public OpenSearchClient getRestClient() {
-        if (openSearchClient == null) {
-            synchronized (OpenSearchClient.class) {
-                if (openSearchClient == null) {
-                    openSearchClient = createRestLowLevelClient();
-                }
-            }
-        }
         return openSearchClient;
     }
 }
